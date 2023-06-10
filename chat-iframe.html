@@ -48,6 +48,52 @@
     <div class="element element-1">Element 1</div>
     <div class="element element-2">Element 2</div>
   </div>
+  <script>
+    function intersects(point, rect) {
+      if (point.x >= rect.left && point.x <= rect.right) {
+        if (point.y >= rect.top && point.y <= rect.bottom) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function postToParent(eventType, eventData) {
+      const event = JSON.stringify({ type: eventType, data: eventData });
+      console.debug("[CHILD] postToParent", event);
+      window.parent.postMessage(event, "*");
+    }
+
+
+    window.addEventListener("message", function (event) {
+      if (!event) {
+        return;
+      }
+
+      const message = JSON.parse(event.data);
+      if (message && message.type === "event:mousemove") {
+        console.debug("FRAME event:mousemove received", message);
+
+        const point = message.data;
+        const el = document.elementFromPoint(point.x, point.y);
+        if (el) {
+          const elements = document.querySelectorAll(".element");
+          let intersectsElement = false;
+          for (const element of elements) {
+            const rect = element.getBoundingClientRect();
+            if (intersects(point, rect)) {
+              console.info("FRAME intersect", el.className);
+              intersectsElement = true;
+            }
+          }
+
+          if (intersectsElement) {
+            postToParent("event:intersects")
+          }
+        }
+      }
+    });
+
+  </script>
 </body>
 
 </html>

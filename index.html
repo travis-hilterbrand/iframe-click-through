@@ -5,6 +5,12 @@
   <meta charset="utf-8" />
   <title>Host Site</title>
   <style>
+    html,
+    body {
+      box-sizing: border-box;
+      height: 100%;
+    }
+
     .chat-iframe {
       border: none;
       position: fixed;
@@ -14,6 +20,15 @@
       right: 0;
       height: 100%;
       width: 100%;
+      pointer-events: auto;
+      background: tomato;
+      opacity: 0.2;
+    }
+
+    .disable-pointer-events {
+      pointer-events: none;
+      background: transparent;
+      opacity: 1;
     }
   </style>
 </head>
@@ -26,7 +41,39 @@
       alert("Button is clickable");
     })
   </script>
-  <iframe class="chat-iframe" src="chat-iframe.html"></iframe>
+
+  <iframe id="chat-iframe" class="chat-iframe" src="chat-iframe.html"></iframe>
+  <script>
+    const widgetFrame = document.getElementById("chat-iframe");
+    if (widgetFrame) {
+      widgetFrame.className = "chat-iframe disable-pointer-events";
+    }
+
+    function postToChild(eventType, eventData) {
+      const event = JSON.stringify({ type: eventType, data: eventData });
+      console.debug("[PARENT] postToChild", event);
+      widgetFrame.contentWindow?.postMessage(event, "*");
+    }
+
+    document.body.addEventListener("mousemove", function (event) {
+      postToChild("event:mousemove", {
+        x: event.clientX,
+        y: event.clientY,
+      });
+    });
+    window.addEventListener("message", function (event) {
+      if (!event) {
+        return;
+      }
+
+      const message = JSON.parse(event.data);
+      if (message && message.type === "event:intersects") {
+        if (widgetFrame) {
+          widgetFrame.className = "chat-iframe";
+        }
+      }
+    })
+  </script>
 </body>
 
 </html>
