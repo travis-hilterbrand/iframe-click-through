@@ -67,9 +67,16 @@
       }
 
       const message = JSON.parse(event.data);
-      if (message && message.type === "event:intersects") {
-        if (widgetFrame) {
-          widgetFrame.className = "chat-iframe";
+      if (message) {
+        if (message.type === "event:intersects") {
+          if (widgetFrame) {
+            widgetFrame.className = "chat-iframe";
+          }
+        }
+        else if (message.type === "event:mouseLeave") {
+          if (widgetFrame) {
+            widgetFrame.className = "chat-iframe disable-pointer-events";
+          }
         }
       }
     })

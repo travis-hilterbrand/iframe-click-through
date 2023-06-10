@@ -63,7 +63,6 @@
       window.parent.postMessage(event, "*");
     }
 
-
     window.addEventListener("message", function (event) {
       if (!event) {
         return;
@@ -92,6 +91,13 @@
         }
       }
     });
+
+    document.addEventListener("mouseleave", function (event) {
+      if (event && event.target && event.target.classList && event.target.classList.contains("element")) {
+        console.info("FRAME mouseLeave", event.target.classList);
+        postToParent("event:mouseLeave")
+      }
+    }, true);
 
   </script>
 </body>
