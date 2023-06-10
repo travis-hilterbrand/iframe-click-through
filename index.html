@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Host Site</title>
+  <style>
+    .chat-iframe {
+      border: none;
+      position: fixed;
+      bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="test-button">Click Me</button>
+  <script>
+    var testButton = document.getElementById("test-button");
+    testButton.addEventListener("click", function () {
+      alert("Button is clickable");
+    })
+  </script>
+  <iframe class="chat-iframe" src="chat-iframe.html"></iframe>
+</body>
+
+</html>
