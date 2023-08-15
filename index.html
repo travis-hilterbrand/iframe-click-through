@@ -62,7 +62,7 @@
       });
     });
     window.addEventListener("message", function (event) {
-      if (!event) {
+      if (!event || typeof event.data !== "string" ) {
         return;
       }
 
