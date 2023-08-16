@@ -42,12 +42,9 @@
     })
   </script>
 
-  <iframe id="chat-iframe" class="chat-iframe" src="chat-iframe.html"></iframe>
+  <iframe id="chat-iframe" class="chat-iframe disable-pointer-events" src="chat-iframe.html"></iframe>
   <script>
     const widgetFrame = document.getElementById("chat-iframe");
-    if (widgetFrame) {
-      widgetFrame.className = "chat-iframe disable-pointer-events";
-    }
 
     function postToChild(eventType, eventData) {
       const event = JSON.stringify({ type: eventType, data: eventData });
